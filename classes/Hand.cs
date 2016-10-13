@@ -1,6 +1,13 @@
+using System.Collections.Generic;
+
 class Hand
 {
    public List<Card> Cards{get;set;}
+
+   public Hand()
+   {
+      Cards = new List<Card>();
+   }
    public int Points
    {
       get
@@ -27,5 +34,24 @@ class Hand
          
          return false;
       }
+   }
+
+   public bool HasBlackJack()
+   {
+      var res = false;
+      if (Cards.Count != 2)
+         return res;
+      
+      var hasAce = false;
+      var hasTen = false;
+      foreach (var card in Cards)
+      {
+         if (card.Val == 1)
+            hasAce = true;
+         if (card.Val >= 10)
+            hasTen = true;
+      }
+
+      return hasAce && hasTen;
    }
 }
