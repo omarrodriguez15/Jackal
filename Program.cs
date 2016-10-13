@@ -10,8 +10,9 @@ namespace ConsoleApplication
             Console.WriteLine("");
             var amtDecks = 2;
             var amtPlayers = 2;
+            var rounds = 50;
             BlackJack blackJack = new BlackJack(amtDecks, amtPlayers);
-            blackJack.SimulateRounds(1);
+            blackJack.SimulateRounds(rounds);
 
             foreach(var player in blackJack.Players)
             {

@@ -27,6 +27,7 @@ class BlackJack
          //Let each player make their moves
          foreach (var player in Players)
          {
+            player.cash -= player.bet;
             while (player.Move())
             {
                switch(player.NextMove)
@@ -140,6 +141,8 @@ class BlackJack
    }
    public void DealCards()
    {
+      if (mainDeck.cards.Count <= ((AmtOfDecks * 52) * .5))
+         mainDeck.ShuffleCards();
       foreach(var player in Players)
       {
          player.dealer = dealer;

@@ -1,6 +1,6 @@
 class Player
 {
-   public int cash = 995;
+   public int cash = 1000;
    public int bet = 5;
    public bool wonLastHand = true;
    public string strategy = "basic";
