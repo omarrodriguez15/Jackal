@@ -8,14 +8,35 @@ class Hand
    {
       Cards = new List<Card>();
    }
+
+   //TODO: correctly adding aces...
    public int Points
    {
       get
       {
          var tot = 0;
+         int aces = 0;
          foreach (var card in Cards)
          {
-            tot += card.Val;
+            var cardVal = card.Val >= 10 ? 10 : card.Val;
+            if (cardVal == 1)
+            {
+               aces++;
+               continue;
+            }
+            tot += cardVal;
+         }
+
+         for(int i=0; i<aces;i++)
+         {
+            if ((tot + 11) > 21)
+            {
+               tot += 1;
+            }
+            else
+            {
+               tot += 11;
+            }
          }
          return tot;
       }

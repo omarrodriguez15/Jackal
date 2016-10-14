@@ -7,10 +7,10 @@ namespace ConsoleApplication
       public static void Main(string[] args)
       {
          try{
-            Console.WriteLine("");
+            //Console.WriteLine("");
             var amtDecks = 2;
             var amtPlayers = 2;
-            var rounds = 50;
+            var rounds = 200;
             BlackJack blackJack = new BlackJack(amtDecks, amtPlayers);
             blackJack.SimulateRounds(rounds);
 

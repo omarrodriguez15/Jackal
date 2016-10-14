@@ -1,3 +1,5 @@
+using System;
+
 class Player
 {
    public int cash = 1000;
@@ -32,7 +34,9 @@ class Player
    {
       //Blackjack!
       if (hand.HasBlackJack())
+      {
          return false;
+      }
 
       var dealerUpCard = dealer.hand.Cards[0];
       //Soft hand
@@ -51,8 +55,9 @@ class Player
             if (dealerUpCard.Val <= 6 && dealerUpCard.Val != 1)
                NextMove = 'd';
             //Dealer up card is 7-A
-            if (dealer.hand.Cards[0].Val <= 12 || dealerUpCard.Val == 1)
+            else if (dealerUpCard.Val <= 12 || dealerUpCard.Val == 1)
                NextMove = 'h';
+            
             return true;
          }
          //Soft 19-21
@@ -77,9 +82,11 @@ class Player
          //Hard 9
          if (hand.Points == 9)
          {
-            if (dealerUpCard.Val < 6 && dealerUpCard.Val != 1)
+            //2-6
+            if (dealerUpCard.Val <= 6 && dealerUpCard.Val != 1)
                NextMove = 'd';
-            if (dealerUpCard.Val <= 12 || dealerUpCard.Val == 1)
+            //7-A
+            else if (dealerUpCard.Val <= 12 || dealerUpCard.Val == 1)
                NextMove = 'h';
             return true;
          }
@@ -103,6 +110,7 @@ class Player
             //Hit on 7-A
             if (dealerUpCard.Val <= 12 || dealerUpCard.Val == 1)
                NextMove = 'h';
+            //Console.Out.WriteLine($"duc:{dealerUpCard.Val};NextMove{NextMove};");
             return true;
          }
             

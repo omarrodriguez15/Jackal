@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 class BlackJack
@@ -23,13 +24,17 @@ class BlackJack
    {
       for (int i=0; i < rounds; i++)
       {
+         //Console.Out.WriteLine($"round: {i+1}");
          DealCards();
          //Let each player make their moves
          foreach (var player in Players)
          {
+            var playerHand = $"c0:{player.hand.Cards[0].ValString};c1:{player.hand.Cards[1].ValString};pts:{player.hand.Points};";
+            //Console.Out.WriteLine(playerHand);
             player.cash -= player.bet;
             while (player.Move())
             {
+               //Console.Out.WriteLine($"pm:{player.NextMove}");
                switch(player.NextMove)
                {
                   case 'h'://hit
@@ -45,29 +50,43 @@ class BlackJack
                   default:
                      break;
                }
+               playerHand = $"c0:{player.hand.Cards[0].ValString};c1:{player.hand.Cards[1].ValString};pts:{player.hand.Points};";
+               //Console.Out.WriteLine(playerHand);
             }
          }
-         
+         var dealerHand = $"d0:{dealer.hand.Cards[0].ValString};d1:{dealer.hand.Cards[1].ValString};pts:{dealer.hand.Points};";
+         //Console.Out.WriteLine(dealerHand);
          //Dealers turn to make his moves
          while (dealer.Move())
          {
+            //Console.Out.WriteLine($"dm:{dealer.NextMove}");
             if (dealer.NextMove == 'h')
             {
                dealer.hand.Cards.Add(mainDeck.cards.Pop());
             }
+            dealerHand = $"dpts:{dealer.hand.Points};";
+            //Console.Out.WriteLine(dealerHand);
          }
          //Splitting the following into two
          //methods makes it loop over the players twice
          //but I think makes the code simpler...
          DeterminePlayerStatuses();
          PayPlayers();
+         DisposeOfCards();
       }
    }
+
+    private void DisposeOfCards()
+    {
+        foreach(var player in Players)
+           player.hand.Cards.Clear();
+    }
 
     private void PayPlayers()
     {
         foreach (var player in Players)
         {
+            //Console.Out.WriteLine($"player status: {player.Status};Cash: {player.cash};");
             switch(player.Status)
             {
                case 'b'://Bust
@@ -85,6 +104,7 @@ class BlackJack
                default:
                   break;
             }
+            //Console.Out.WriteLine($"playerCashAfter: {player.cash}");
         }
     }
 
@@ -92,8 +112,11 @@ class BlackJack
    {
       var dealerPoints = dealer.hand.Points;
       var dealerBusted = dealerPoints > 21;
+      //Console.Out.WriteLine($"dPts: {dealerPoints}");
+
       foreach (var player in Players)
       {
+         //Console.Out.WriteLine($"pPts: {player.hand.Points}");
          //Player busted
          if (player.hand.Points > 21)
          {
