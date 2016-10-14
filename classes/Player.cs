@@ -55,7 +55,7 @@ class Player
             if (dealerUpCard.Val <= 6 && dealerUpCard.Val != 1)
                NextMove = 'd';
             //Dealer up card is 7-A
-            else if (dealerUpCard.Val <= 12 || dealerUpCard.Val == 1)
+            else if (dealerUpCard.Val <= 13 || dealerUpCard.Val == 1)
                NextMove = 'h';
             
             return true;
@@ -86,7 +86,7 @@ class Player
             if (dealerUpCard.Val <= 6 && dealerUpCard.Val != 1)
                NextMove = 'd';
             //7-A
-            else if (dealerUpCard.Val <= 12 || dealerUpCard.Val == 1)
+            else if (dealerUpCard.Val <= 13 || dealerUpCard.Val == 1)
                NextMove = 'h';
             return true;
          }
@@ -108,9 +108,9 @@ class Player
             }
                
             //Hit on 7-A
-            if (dealerUpCard.Val <= 12 || dealerUpCard.Val == 1)
+            if (dealerUpCard.Val <= 13 || dealerUpCard.Val == 1)
                NextMove = 'h';
-            //Console.Out.WriteLine($"duc:{dealerUpCard.Val};NextMove{NextMove};");
+            //Console.Out.WriteLine($"duc:{dealerUpCard.Val};NextMove:{NextMove};");
             return true;
          }
             

@@ -27,9 +27,9 @@ class Card
          switch (Val)
          {
             case 1: return "ace";
-            case 10: return "jack";
-            case 11: return "queen";
-            case 12: return "king";
+            case 11: return "jack";
+            case 12: return "queen";
+            case 13: return "king";
             default: return Val.ToString();
          }
       }
