@@ -40,7 +40,7 @@ class Deck
           }
        }
 
-       //Console.Out.WriteLine($"Generating the deck caused {collisions} collisions");
+       Console.Out.WriteLine($"Generating the deck caused {collisions} collisions");
        cards = new Stack<Card>(tempCards);
     }
 }

@@ -1,7 +1,6 @@
-using System;
-
 class Player
 {
+   public string Name = "";
    public int cash = 1000;
    public int bet = 5;
    public bool wonLastHand = true;
@@ -13,9 +12,10 @@ class Player
 
    public char Status = 'n';
 
-   public Player()
+   public Player(string name = "default")
    {
       hand = new Hand();
+      Name = name;
    }
 
    public bool Move()
