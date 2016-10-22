@@ -80,6 +80,8 @@ class BlackJack
     {
         foreach(var player in Players)
            player.hand.Cards.Clear();
+
+        dealer.hand.Cards.Clear();
     }
 
     private void PayPlayers()
