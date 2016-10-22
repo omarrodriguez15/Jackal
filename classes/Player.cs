@@ -29,7 +29,7 @@ class Player
       }
    }
 
-//TODO: account for doubles
+   //TODO: account for doubles
    private bool BasicStrategyMove()
    {
       //Blackjack!

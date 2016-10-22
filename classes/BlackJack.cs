@@ -6,8 +6,10 @@ class BlackJack
    public int AmtOfDecks {get;set;}
    public List<Player> Players {get;set;}
    public Dealer dealer {get;set;}
-   private Deck mainDeck = null;
-   public BlackJack(int amtOfDecks, int players)
+   public Deck mainDeck = null;
+   public bool boringBet = true;
+
+   public BlackJack(int amtOfDecks, int players, int startingAmt = 1000, int betAmt = 5)
    {
       AmtOfDecks = amtOfDecks;
       dealer = new Dealer();
@@ -16,7 +18,7 @@ class BlackJack
 
       for (int i=0; i<players;i++)
       {
-          Players.Add(new Player($"Player#{i+1}"));
+          Players.Add(new Player($"Player#{i+1}"){ cash = startingAmt, bet = betAmt });
       }
    }
 
@@ -31,6 +33,8 @@ class BlackJack
          {
             var playerHand = $"{player.Name}:Card:{player.hand.Cards[0].ValString};Card:{player.hand.Cards[1].ValString};pts:{player.hand.Points};";
             Console.Out.WriteLine(playerHand);
+
+            player.bet = GetNewBet(player);
             player.cash -= player.bet;
             while (player.Move())
             {
@@ -75,6 +79,26 @@ class BlackJack
          DisposeOfCards();
       }
    }
+
+    private int GetNewBet(Player player)
+    {
+        //boringBet is 5 every time
+        //else we increase bet after a win by a half
+        var newBet = 5;
+
+        if (boringBet)
+        {
+            return newBet;
+        }
+
+        //This should mean they won the last hand
+        if(player.Status == 'w')
+        {
+            newBet = (int)(player.bet * 1.5);
+        }
+
+        return newBet;
+    }
 
     private void DisposeOfCards()
     {
