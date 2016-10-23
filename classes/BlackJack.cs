@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 class BlackJack
 {
@@ -8,6 +9,7 @@ class BlackJack
    public Dealer dealer {get;set;}
    public Deck mainDeck = null;
    public bool boringBet = true;
+   public StringBuilder sb = new StringBuilder();
 
    public BlackJack(int amtOfDecks, int players, int startingAmt = 1000, int betAmt = 5)
    {
@@ -27,18 +29,23 @@ class BlackJack
       for (int i=0; i < rounds; i++)
       {
          Console.Out.WriteLine($"round: {i+1}");
+         sb.AppendLine($"round: {i+1}");
+
          DealCards();
          //Let each player make their moves
          foreach (var player in Players)
          {
             var playerHand = $"{player.Name}:Card:{player.hand.Cards[0].ValString};Card:{player.hand.Cards[1].ValString};pts:{player.hand.Points};";
             Console.Out.WriteLine(playerHand);
+            sb.AppendLine(playerHand);
 
             player.bet = GetNewBet(player);
             player.cash -= player.bet;
             while (player.Move())
             {
                Console.Out.WriteLine($"NextMove:{player.NextMove}");
+               sb.AppendLine($"NextMove:{player.NextMove}");
+
                switch(player.NextMove)
                {
                   case 'h'://hit
@@ -54,22 +61,31 @@ class BlackJack
                   default:
                      break;
                }
+
                playerHand = $"Card:{player.hand.Cards[0].ValString};Card:{player.hand.Cards[1].ValString};pts:{player.hand.Points};";
                Console.Out.WriteLine(playerHand);
+               sb.AppendLine(playerHand);
             }
          }
+         
          var dealerHand = $"DealerCard:{dealer.hand.Cards[0].ValString};Card:{dealer.hand.Cards[1].ValString};pts:{dealer.hand.Points};";
          Console.Out.WriteLine(dealerHand);
+         sb.AppendLine(dealerHand);
+
          //Dealers turn to make his moves
          while (dealer.Move())
          {
             Console.Out.WriteLine($"DealerMove:{dealer.NextMove}");
+            sb.AppendLine($"DealerMove:{dealer.NextMove}");
+
             if (dealer.NextMove == 'h')
             {
                dealer.hand.Cards.Add(mainDeck.cards.Pop());
             }
+
             dealerHand = $"DealerPts:{dealer.hand.Points};";
             Console.Out.WriteLine(dealerHand);
+            sb.AppendLine(dealerHand);
          }
          //Splitting the following into two
          //methods makes it loop over the players twice
@@ -113,6 +129,8 @@ class BlackJack
         foreach (var player in Players)
         {
             Console.Out.WriteLine($"Player status: {player.Status};Cash: ${player.cash};PlayerPts: {player.hand.Points}");
+            sb.AppendLine($"Player status: {player.Status};Cash: ${player.cash};PlayerPts: {player.hand.Points}");
+
             switch(player.Status)
             {
                case 'b'://Bust
@@ -130,7 +148,9 @@ class BlackJack
                default:
                   break;
             }
+            
             Console.Out.WriteLine($"PlayerCashAfter: ${player.cash}");
+            sb.AppendLine($"PlayerCashAfter: ${player.cash}");
         }
     }
 
@@ -138,7 +158,9 @@ class BlackJack
    {
       var dealerPoints = dealer.hand.Points;
       var dealerBusted = dealerPoints > 21;
+      
       Console.Out.WriteLine($"DealerPts: {dealerPoints}");
+      sb.AppendLine($"DealerPts: {dealerPoints}");
 
       foreach (var player in Players)
       {
