@@ -1,127 +1,35 @@
-class Player
+namespace Jackal
 {
-   public string Name = "";
-   public int cash = 1000;
-   public int bet = 5;
-   public bool wonLastHand = true;
-   public string strategy = "basic";
-   //h = hit,s = stand, d = Double, y = split, n = don't split
-   public char NextMove = ' ';
-   public Hand hand { get; set;}
-   public Dealer dealer {get;set;}
-
-   public char Status = 'n';
-
-   public Player(string name = "default")
+   public class Player
    {
-      hand = new Hand();
-      Name = name;
-   }
+      public string Name = "";
+      public int cash = 1000;
+      public int bet = 5;
+      public int BaseBet = 5;
+      public bool wonLastHand = true;
+      public IBettingStrategy BettingStrategy = new BoringBetting();
+      public IBlackJackStrategy PlayingStrategy = new ManualBasicStrategy();
+      //h = hit,s = stand, d = Double, y = split, n = don't split
+      public char NextMove = ' ';
+      public Hand hand { get; set;}
+      public Dealer dealer {get;set;}
+      public char Status = 'n';
 
-   public bool Move()
-   {
-      switch(strategy)
+      public Player(string name = "default")
       {
-         case"basic":
-            return BasicStrategyMove();
-         default:
-            return false;
-      }
-   }
-
-   //TODO: account for doubles
-   private bool BasicStrategyMove()
-   {
-      //Blackjack!
-      if (hand.HasBlackJack())
-      {
-         return false;
+         hand = new Hand();
+         Name = name;
       }
 
-      var dealerUpCard = dealer.hand.Cards[0];
-      //Soft hand
-      if (hand.IsSoft)
+      public bool Move()
       {
-         //Soft 13-15
-         if (hand.Points <= 15)
-         {
-            NextMove = 'h';
-            return true;
-         }
-         //Soft 16-18
-         if (hand.Points <= 18)
-         {
-            //Dealer up card is 2-6
-            if (dealerUpCard.Val <= 6 && dealerUpCard.Val != 1)
-               NextMove = 'd';
-            //Dealer up card is 7-A
-            else if (dealerUpCard.Val <= 13 || dealerUpCard.Val == 1)
-               NextMove = 'h';
-            
-            return true;
-         }
-         //Soft 19-21
-         if (hand.Points <= 21)
-         {
-            NextMove = 's';
-            return false;
-         }
-            
-         //Busted!
-         return false;
+         return PlayingStrategy.HasNextMove(hand, dealer.hand.Cards[0], ref NextMove);
       }
-      //Hard hand (No aces)
-      else
+
+      //TODO: Case where we don't have any money left 
+      public int GetNewBet()
       {
-         //Hard 4-8
-         if (hand.Points <= 8)
-         {
-            NextMove = 'h';
-            return true;
-         }
-         //Hard 9
-         if (hand.Points == 9)
-         {
-            //2-6
-            if (dealerUpCard.Val <= 6 && dealerUpCard.Val != 1)
-               NextMove = 'd';
-            //7-A
-            else if (dealerUpCard.Val <= 13 || dealerUpCard.Val == 1)
-               NextMove = 'h';
-            return true;
-         }
-         //10 or 11 d if higher than dealer
-         if ((hand.Points == 10 || hand.Points == 11) && dealerUpCard.Val < hand.Points && dealerUpCard.Val != 1)
-         {
-            NextMove = 'd';
-            return true;
-         }
-            
-         //12-16
-         if (hand.Points <= 16)
-         {
-            //Stand on 2-6
-            if (dealerUpCard.Val <= 6 && dealerUpCard.Val != 1)
-            {
-               NextMove = 's';
-               return false;
-            }
-               
-            //Hit on 7-A
-            if (dealerUpCard.Val <= 13 || dealerUpCard.Val == 1)
-               NextMove = 'h';
-            //Console.Out.WriteLine($"duc:{dealerUpCard.Val};NextMove:{NextMove};");
-            return true;
-         }
-            
-         //Stand on 17-21
-         if (hand.Points <= 21)
-         {
-            NextMove = 's';
-            return false;
-         }
-         //Busted
-         return false;
+         return BettingStrategy.GetNextBet(BaseBet, bet, Status);
       }
    }
 }

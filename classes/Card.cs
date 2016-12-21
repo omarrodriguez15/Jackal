@@ -1,68 +1,71 @@
 using System.Collections.Generic;
 
-class Card
+namespace Jackal
 {
-   public int Suit = -1;
-   public int Val = -1;
-   public bool HasFace = false;
-
-   public string SuitString 
+   public class Card
    {
-      get
+      public int Suit = -1;
+      public int Val = -1;
+      public bool HasFace = false;
+
+      public string SuitString 
       {
-         switch (Suit)
+         get
          {
-            case 0: return "spade";
-            case 1: return "heart";
-            case 2: return "diamond";
-            case 3: return "clover";
-            default: return "JOKER!!!!!";
+            switch (Suit)
+            {
+               case 0: return "spade";
+               case 1: return "heart";
+               case 2: return "diamond";
+               case 3: return "clover";
+               default: return "JOKER!!!!!";
+            }
          }
       }
-   }
-   public string ValString 
-   {
-      get
+      public string ValString 
       {
-         switch (Val)
+         get
          {
-            case 1: return "ace";
-            case 11: return "jack";
-            case 12: return "queen";
-            case 13: return "king";
-            default: return Val.ToString();
+            switch (Val)
+            {
+               case 1: return "ace";
+               case 11: return "jack";
+               case 12: return "queen";
+               case 13: return "king";
+               default: return Val.ToString();
+            }
          }
       }
-   }
 
-   private static List<Card> OrderedCards = null;
+      private static List<Card> OrderedCards = null;
 
-   public Card(int suit, int val, bool hasFace = false)
-   {
-      Suit = suit;
-      Val = val;
-      HasFace = hasFace;
-   }
+      public Card(int suit, int val, bool hasFace = false)
+      {
+         Suit = suit;
+         Val = val;
+         HasFace = hasFace;
+      }
 
-   public static List<Card> GetOrderedCards()
-   {
-      if (OrderedCards != null)
+      public static List<Card> GetOrderedCards()
+      {
+         if (OrderedCards != null)
+            return OrderedCards;
+
+         OrderedCards = new List<Card>();
+
+         //Forech suit
+         for (int suit=0; suit < 4 ;suit++)
+         {
+            //Ace through King 1-13
+            for (int val=1; val <= 13 ;val++)
+            {
+               //val is 1 or greater than 10 its a face card
+               var isFaceCard = val == 1 ? true : val > 10 ? true : false;
+               OrderedCards.Add(new Card(suit, val, isFaceCard));
+            }
+         }
+         
          return OrderedCards;
-
-      OrderedCards = new List<Card>();
-
-      //Forech suit
-      for (int suit=0; suit < 4 ;suit++)
-      {
-         //Ace through King 1-13
-         for (int val=1; val <= 13 ;val++)
-         {
-            //val is 1 or greater than 10 its a face card
-            var isFaceCard = val == 1 ? true : val > 10 ? true : false;
-            OrderedCards.Add(new Card(suit, val, isFaceCard));
-         }
       }
-      
-      return OrderedCards;
    }
 }
