@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ConsoleApplication
+namespace Jackal
 {
    public class Program
    {
@@ -20,7 +20,7 @@ namespace ConsoleApplication
             Console.SetOut(sw);
             Console.Out.WriteLine($"Rounds: {rounds}; Decks: {amtDecks}; Players: {amtPlayers};");
 
-            BlackJack blackJack = new BlackJack(amtDecks, amtPlayers);
+            BlackJackSim blackJack = new BlackJackSim(amtDecks, amtPlayers);
             blackJack.SimulateRounds(rounds);
 
             foreach(var player in blackJack.Players)
