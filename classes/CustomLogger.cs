@@ -21,5 +21,9 @@ namespace Jackal
       {
          return _sb.ToString();
       }
+      public static void ClearLog()
+      {
+         _sb.Clear();
+      }
    }
 }
