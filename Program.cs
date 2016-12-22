@@ -7,17 +7,9 @@ namespace Jackal
    {
       public static void Main(string[] args)
       {
-         var outputFile = "results";
-         var logFolder = "output";
-         outputFile = GetLogFileName(logFolder, outputFile);
-         
-         using (StreamWriter sw = File.AppendText(outputFile))
          try{
-            var amtDecks = 2;
-            var amtPlayers = 2;
-            var rounds = 200;
+            int amtDecks = 2, amtPlayers = 2, rounds = 200;
 
-            Console.SetOut(sw);
             Console.Out.WriteLine($"Rounds: {rounds}; Decks: {amtDecks}; Players: {amtPlayers};");
 
             BlackJackSim blackJack = new BlackJackSim(amtDecks, amtPlayers);
@@ -34,18 +26,5 @@ namespace Jackal
             Console.WriteLine(ex.StackTrace);
          }
       }
-
-      private static string GetLogFileName(string logFolder, string fileName)
-      {
-         if (!Directory.Exists(logFolder))
-         {
-            Directory.CreateDirectory(logFolder);
-            Console.Out.WriteLine($"Created directory {logFolder}");
-         }
-
-         var files = Directory.GetFiles(logFolder);
-
-         return Path.Combine(logFolder, $"{fileName}{files.Length}.log");
-      }
-    }
+   }
 }
